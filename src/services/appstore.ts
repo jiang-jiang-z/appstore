@@ -5,6 +5,19 @@ const COUNTRIES = [
   'us', 'cn', 'jp', 'gb', 'de', 'au', 'ca', 'in', 'kr', 'br'
 ]
 
+interface ITunesAppResult {
+  bundleId: string
+  trackName: string
+  artistName: string
+  description: string
+  artworkUrl512?: string
+  artworkUrl100?: string
+  primaryGenreName: string
+  currency: string
+  price: number
+  formattedPrice: string
+}
+
 class AppStoreService {
   private readonly baseUrl = 'https://itunes.apple.com'
 
@@ -19,11 +32,11 @@ class AppStoreService {
         },
       })
 
-      return response.data.results.map((app: any) => ({
+      return response.data.results.map((app: ITunesAppResult): SearchResult => ({
         bundleId: app.bundleId,
         name: app.trackName,
         developer: app.artistName,
-        iconUrl: app.artworkUrl512 || app.artworkUrl100,
+        iconUrl: app.artworkUrl512 || app.artworkUrl100 || null,
         category: app.primaryGenreName,
         description: app.description,
       }))
@@ -47,13 +60,13 @@ class AppStoreService {
         return null
       }
 
-      const app = response.data.results[0]
+      const app: ITunesAppResult = response.data.results[0]
       return {
         bundleId: app.bundleId,
         trackName: app.trackName,
         artistName: app.artistName,
         description: app.description,
-        artworkUrl512: app.artworkUrl512 || app.artworkUrl100,
+        artworkUrl512: app.artworkUrl512 || app.artworkUrl100 || '',
         primaryGenreName: app.primaryGenreName,
         currency: app.currency,
         price: app.price,

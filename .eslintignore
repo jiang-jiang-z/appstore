@@ -1,0 +1,12 @@
+node_modules
+.next
+out
+build
+next-env.d.ts
+src/generated
+prisma/dev.db
+**/*.js
+**/*.d.ts
+**/runtime/*.js
+**/wasm*.js
+**/edge*.js 

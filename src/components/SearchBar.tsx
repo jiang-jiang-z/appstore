@@ -55,11 +55,17 @@ export function SearchBar({ onSearch, results, loading, onSelectApp }: SearchBar
               }}
             >
               <div className="flex items-center gap-3">
-                <img
-                  src={app.iconUrl}
-                  alt={app.name}
-                  className="w-12 h-12 rounded-lg"
-                />
+                {app.iconUrl ? (
+                  <img
+                    src={app.iconUrl}
+                    alt={app.name}
+                    className="w-12 h-12 rounded-lg"
+                  />
+                ) : (
+                  <div className="w-12 h-12 rounded-lg bg-gray-200 flex items-center justify-center">
+                    <span className="text-gray-500 text-xs">📱</span>
+                  </div>
+                )}
                 <div className="flex-1">
                   <h3 className="font-medium text-gray-900">{app.name}</h3>
                   <p className="text-sm text-gray-600">{app.developer}</p>

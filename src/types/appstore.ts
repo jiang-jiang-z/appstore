@@ -29,7 +29,7 @@ export interface SearchResult {
   bundleId: string
   name: string
   developer: string
-  iconUrl: string
+  iconUrl: string | null
   category: string
   description: string
 }

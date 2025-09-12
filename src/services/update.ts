@@ -6,7 +6,7 @@ export interface UpdateResult {
   success: boolean
   message: string
   timestamp: Date
-  details?: any
+  details?: Record<string, string | number | boolean | unknown[]>
 }
 
 class UpdateService {
@@ -49,7 +49,7 @@ class UpdateService {
           // Add delay to avoid rate limiting
           await new Promise(resolve => setTimeout(resolve, 500))
         } catch (error) {
-          results.push({ bundleId, success: false, error: error?.toString() })
+          results.push({ bundleId, success: false, error: String(error) })
         }
       }
 
