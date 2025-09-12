@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model App {
+  id          String @id @default(cuid())
+  bundleId    String @unique @map("bundle_id")
+  name        String
+  iconUrl     String? @map("icon_url")
+  category    String?
+  developer   String?
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  
+  prices      Price[]
+  
+  @@map("apps")
+}
+
+model Country {
+  id             String @id @default(cuid())
+  code           String @unique
+  name           String
+  currencyCode   String @unique @map("currency_code")
+  currencySymbol String @map("currency_symbol")
+  
+  prices         Price[]
+  exchangeRates  ExchangeRate[] @relation("FromCurrency")
+  
+  @@map("countries")
+}
+
+model Price {
+  id            String @id @default(cuid())
+  appId         String @map("app_id")
+  countryId     String @map("country_id")
+  priceType     String @map("price_type") // "monthly", "yearly", "lifetime", etc.
+  originalPrice Float @map("original_price")
+  currencyCode  String @map("currency_code")
+  usdPrice      Float? @map("usd_price")
+  lastUpdated   DateTime @default(now()) @map("last_updated")
+  
+  app           App @relation(fields: [appId], references: [id], onDelete: Cascade)
+  country       Country @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  
+  @@unique([appId, countryId, priceType])
+  @@map("prices")
+}
+
+model ExchangeRate {
+  id           String @id @default(cuid())
+  fromCurrency String @map("from_currency")
+  toCurrency   String @map("to_currency")
+  rate         Float
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  
+  country      Country @relation("FromCurrency", fields: [fromCurrency], references: [currencyCode])
+  
+  @@unique([fromCurrency, toCurrency])
+  @@map("exchange_rates")
+}

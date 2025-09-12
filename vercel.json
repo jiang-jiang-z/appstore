@@ -1,0 +1,17 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "installCommand": "npm install",
+  "functions": {
+    "app/api/**/route.js": {
+      "maxDuration": 30
+    }
+  },
+  "crons": [
+    {
+      "path": "/api/update?type=quick",
+      "schedule": "0 */6 * * *"
+    }
+  ]
+}
