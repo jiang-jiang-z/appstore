@@ -138,9 +138,9 @@ class DatabaseService {
     return await prisma.app.findMany({
       where: {
         OR: [
-          { name: { contains: searchTerm, mode: 'insensitive' } },
-          { bundleId: { contains: searchTerm, mode: 'insensitive' } },
-          { developer: { contains: searchTerm, mode: 'insensitive' } },
+          { name: { contains: searchTerm } },
+          { bundleId: { contains: searchTerm } },
+          { developer: { contains: searchTerm } },
         ],
       },
       include: {
